@@ -73,7 +73,7 @@ get_ubuntu() {
   echo "  -> Extracting package"
   cd tmp
   ar x pkg.deb || die "ar failed"
-  tar xf data.tar.* || die "tar failed"
+  tar  mxf data.tar.* || die "tar failed"
   cd ..
   local libc=`find tmp -name libc.so.6 || die "Cannot locate libc.so.6"`
   process_libc $libc $id $info
