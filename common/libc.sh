@@ -98,6 +98,14 @@ get_all_ubuntu() {
   done
 }
 
+get_all_debian() {
+  local info=$1
+  local url=$2
+  for f in `wget $url/ -O - 2>/dev/null | egrep -oh 'libc6[^"]*' |grep -v "</a>"|grep -v "dev" |grep -v "dbg" | grep -v "pic" | egrep -e "amd64|i386"`; do
+    get_ubuntu $url/$f $1
+  done
+}
+
 # ===== Local ===== #
 
 add_local() {
@@ -109,3 +117,5 @@ add_local() {
   check_id $id || return
   process_libc $libc $id $info
 }
+
+
