@@ -1,25 +1,23 @@
 from sys import argv
-from operator import itemgetter
-import os, re
+import os, re, bisect
 
 class Argument:
 	def __init__(self, name, adr):
 		self.name = name
 		self.adr = int(adr[2:], 16) if adr == "0x" else int(adr, 16)
 
-# TODO: Add items to result as sorted (binary insertion) instead of doing sort at the end (bisect?)
 def usage():
 	print("%-7s %s" % ("usage:", "<name> <address> <name> <address> ..."))
 	print("%-7s %s" % ("", "<name> <address> <name> <address> ... <list n closest files>"))
 	exit()
 
 def create_pattern(arguments):
-	pattern = ""
+	pattern = []
 	for i, argument in enumerate(arguments):
 		if i > 0:
 			pattern += "|"
-		pattern += re.escape(argument.name)
-	return re.compile("^(" + pattern + ")\s")
+		pattern.append(re.escape(argument.name))
+	return re.compile("^(" + "".join(pattern) + ")\s")
 
 def find_offset_diff(arguments):
 	offsets = []
@@ -27,7 +25,7 @@ def find_offset_diff(arguments):
 
 	for filename in os.listdir(root_dir):
 		if filename.endswith(".symbols"):
-			offsets.append((filename, abs(find_offset(arguments, filename, root_dir))))
+			bisect.insort(offsets, (abs(find_offset(arguments, filename, root_dir)), filename))
 	return offsets
 
 def find_list_index(the_list, substring):
@@ -69,8 +67,7 @@ while(i < len(argv) - 1):
 
 n = int(argv[-1]) if len(argv) % 2 == 0 else 3
 results = find_offset_diff(arguments)
-results.sort(key = itemgetter(1))
 n = len(results) if n > len(results) else n
 
 for i in range(n):
-	print("%s (diff: 0x%x)" % (results[i][0], results[i][1]))
+	print("%s (diff: 0x%x)" % (results[i][1], results[i][0]))
