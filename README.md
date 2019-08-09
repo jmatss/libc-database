@@ -10,11 +10,11 @@ You can also add a custom libc to your database.
 
     $ ./add /usr/lib/libc-2.21.so
 
-Find all the libc's in the database that have a given name at the given address.
-Only the last 12 bits are checked, because randomization usually works on page
-size level.
+Find all the libc's in the database that have the given names at the given
+addresses. Only the last 12 bits are checked, because randomization usually
+works on page size level.
 
-    $ ./find printf 260
+    $ ./find printf 260 puts f30
     archive-glibc (id libc6_2.19-10ubuntu2_i386)
 
 Find a libc from the leaked return address into __libc_start_main.
@@ -40,3 +40,14 @@ Check whether a library is already in the database.
 
     $ ./identify /usr/lib/libc.so.6
     id local-f706181f06104ef6c7008c066290ea47aa4a82c5
+
+Download the whole libs corresponding to a libc ID.
+
+    $ ./download libc6_2.23-0ubuntu10_amd64
+    Getting libc6_2.23-0ubuntu10_amd64
+        -> Location: http://security.ubuntu.com/ubuntu/pool/main/g/glibc/libc6_2.23-0ubuntu10_amd64.deb
+        -> Downloading package
+        -> Extracting package
+        -> Package saved to libs/libc6_2.23-0ubuntu10_amd64
+    $ ls libs/libc6_2.23-0ubuntu10_amd64
+    ld-2.23.so ... libc.so.6 ... libpthread.so.0 ...
