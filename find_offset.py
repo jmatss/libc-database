@@ -14,10 +14,8 @@ def usage():
 def create_pattern(arguments):
 	pattern = []
 	for i, argument in enumerate(arguments):
-		if i > 0:
-			pattern += "|"
 		pattern.append(re.escape(argument.name))
-	return re.compile("^(" + "".join(pattern) + ")\s")
+	return re.compile("^(" + "|".join(pattern) + ")\s")
 
 def find_offset_diff(arguments):
 	offsets = []
