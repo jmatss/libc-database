@@ -37,6 +37,8 @@ def find_list_index(the_list, substring):
 def find_offset(arguments, filename, root_dir):
 	pattern = create_pattern(arguments)
 	results = find_positions(pattern, filename, root_dir)
+	if len(results) <  len(arguments):
+		raise Exception("Could not find all symbols specified")
 
 	# TODO: more comparisons to get more accurate results(?)
 	offset = 0
@@ -44,6 +46,7 @@ def find_offset(arguments, filename, root_dir):
 	for j, argument in enumerate(arguments):
 		if j == 0:
 			continue
+
 		k = find_list_index(results, arguments[j].name)
 		offset += abs( abs(arguments[0].adr - arguments[j].adr) - abs(int(results[i].split()[1], 16) - int(results[k].split()[1], 16)) )
 
