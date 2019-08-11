@@ -7,8 +7,8 @@ class Argument:
 		self.adr = int(adr[2:], 16) if adr == "0x" else int(adr, 16)
 
 def usage():
-	print("%-7s %s" % ("usage:", "<name> <address> <name> <address> ..."))
-	print("%-7s %s" % ("", "<name> <address> <name> <address> ... <list n closest files>"))
+	print("%-7s %s %s" % ("usage:", argv[0], "<name> <address> <name> <address> ..."))
+	print("%-7s %s %s" % ("", argv[0], "<name> <address> <name> <address> ... <list n closest files>"))
 	exit()
 
 def create_pattern(arguments):
