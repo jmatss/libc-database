@@ -78,4 +78,4 @@ results = find_offset_diff(arguments)
 n = len(results) if n > len(results) else n
 
 for i in range(n):
-	print("{} (diff: 0x{:0>16x})".format(results[i][1], results[i][0]))
+	print("{} (diff: 0x{:x})".format(results[i][1], results[i][0]))
