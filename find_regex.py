@@ -1,12 +1,14 @@
 from sys import argv
 import os, re
 
+
 def usage():
 	print("%-7s %s %s" % ("usage:", argv[0], "<regex (on the symbol files)> ..."))
+	print("%-7s %s %s" % ("", argv[0], "<regex (on the symbol files)> ... \"-\" <name> ..."))
 	exit()
 
+
 def find_matches(arguments):
-	results = []
 	root_dir = "db" if len(os.path.dirname(argv[0])) == 0 else os.path.dirname(argv[0]) + "/db"
 
 	# Turn arguments into regex
@@ -27,9 +29,8 @@ def find_matches(arguments):
 						file_results.append(line)
 
 			if False not in file_patterns_matched:
-				results.append((filename, file_results))
+				yield (filename, file_results)
 
-	return results
 
 if len(argv) < 2:
 	usage()
